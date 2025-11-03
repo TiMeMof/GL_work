@@ -64,7 +64,7 @@ public:
 
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
+        // 生成了一个VBO（顶点缓冲对象），并将顶点数据传输到GPU中
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
         
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)0);
@@ -77,7 +77,7 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0); // 下班
 
-        unsigned textureId = loadTexture("material/wood.png"); // 纹理也可以考虑传参加载
+        unsigned textureId = loadTexture("material/grassblock.png"); // 纹理也可以考虑传参加载
     }
 
     void Draw() // 增加绘图函数封装所有立方体 "图元绘制" 代码，集成在在While循环中
@@ -87,7 +87,9 @@ public:
         glBindTexture(GL_TEXTURE_2D, textureId);
         
         glm::mat4 model = glm::mat4(1.0f); // 模型矩阵: 变换矩阵初始化，然后附加：缩放、旋转、位移。但变换顺序与阅读顺序相反
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 1.0f)); 
+        // 自动旋转，glfwGetTime()获得启动后的时间，秒为单位,glm::vec3(xyz)是旋转轴
+        // x左，y上，z前
+        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(.0f, .0f, 1.0f)); 
 
         // glm::mat4 view  = glm::mat4(1.0f);
         // view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
@@ -105,6 +107,7 @@ public:
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(.0f, 1.0f, .0f)); 
         shader.setMat4("model", model); // 重新设置模型再绘制
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
