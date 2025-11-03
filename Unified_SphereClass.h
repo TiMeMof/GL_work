@@ -17,6 +17,7 @@ private:
     float radius; // 球体半径
     int indexCount; // 索引总数
     char const * texture_path;
+    glm::mat4 model = glm::mat4(1.0f); // 模型pose
 
 public:
     Unified_SphereClass(const char* vertexPath, const char* fragmentPath, 
@@ -109,7 +110,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, textureId);
         
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(.0f, .0f, 1.0f));
+        // model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(.0f, .0f, 1.0f));
         
         glm::mat4 view = camera.GetViewMatrix(); // 使用相同的摄像机设置
         
@@ -130,8 +131,9 @@ public:
         // glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
     }
 
-    void Draw(glm::mat4 model)
+    void Draw(glm::mat4 model_in)
     {
+        model = model_in;
         shader.use();
         shader.setFloat("rgb_b", sin(glfwGetTime()));
         glBindTexture(GL_TEXTURE_2D, textureId);
@@ -151,8 +153,6 @@ public:
 
     glm::mat4 GetModelMatrix()
     {
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(.0f, .0f, 1.0f));
         return model;
     }
     

@@ -51,20 +51,33 @@ static unsigned int loadCubemap(std::vector<std::string> faces)
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
     int width, height, nrChannels;
-    for (unsigned int i = 0; i < faces.size(); i++)
-    {
+    for (unsigned int i = 0; i < faces.size(); i++) {
+        std::string faceName;
+        switch(i) {
+            case 0: faceName = "RIGHT (+X)"; break;
+            case 1: faceName = "LEFT (-X)"; break;
+            case 2: faceName = "TOP (+Y)"; break;
+            case 3: faceName = "BOTTOM (-Y)"; break; // 重点检查这个
+            case 4: faceName = "FRONT (+Z)"; break;
+            case 5: faceName = "BACK (-Z)"; break;
+        }
+        
         unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
         if (data)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             stbi_image_free(data);
+            std::cout << "Successfully loaded: " << faceName << " - " << faces[i] << std::endl;
         }
         else
         {
-            std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
+            std::cout << "Cubemap texture FAILED to load at path: " << faces[i] << std::endl;
+            std::cout << "Error: " << stbi_failure_reason() << std::endl;
             stbi_image_free(data);
         }
     }
+    
+    // 确保纹理参数正确
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
