@@ -122,7 +122,10 @@ GLFWwindow* Initialize_OpenGL() // 把OpenGL通用的初始化配置封装
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) { throw std::runtime_error("Failed to initialize GLAD"); } // glad测试
     
     glEnable(GL_DEPTH_TEST); // 开启深度测试
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // 针对透明物体：提前设置好混合参数（但初始化时不启用）
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // 针对透明物体：提前设置好混合参数（但初始化时不启用）
 
+    // 启用透明混合
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     return window;
 }

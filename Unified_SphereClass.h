@@ -18,12 +18,13 @@ private:
     int indexCount; // 索引总数
     char const * texture_path;
     glm::mat4 model = glm::mat4(1.0f); // 模型pose
+    float alpha = 1.0f; // 透明度
 
 public:
     Unified_SphereClass(const char* vertexPath, const char* fragmentPath, 
                         char const * texture_path = "material/grassblock.png",
-                       int slices = 32, int stacks = 32, float radius = 1.0f) 
-        : shader(vertexPath, fragmentPath), slices(slices), stacks(stacks), radius(radius), texture_path(texture_path)
+                       int slices = 32, int stacks = 32, float radius = 1.0f, float alpha_in = 1.0f) 
+        : shader(vertexPath, fragmentPath), slices(slices), stacks(stacks), radius(radius), texture_path(texture_path), alpha(alpha_in)
     {
         // 生成球体顶点数据（使用参数方程）
         std::vector<float> vertices;
@@ -107,6 +108,7 @@ public:
     {
         shader.use();
         shader.setFloat("rgb_b", sin(glfwGetTime()));
+        shader.setFloat("alpha", alpha); // 设置透明度uniform
         glBindTexture(GL_TEXTURE_2D, textureId);
         
         glm::mat4 model = glm::mat4(1.0f);
@@ -120,9 +122,20 @@ public:
         shader.setMat4("model", model);
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
-        
+
+        // 对于半透明物体：在绘制时禁用深度写入，以便正确混合
+        bool transparent = (alpha < 1.0f - 1e-6f);
+        if (transparent) {
+            glDepthMask(GL_FALSE);
+        }
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
+        if (transparent) {
+            glDepthMask(GL_TRUE);
+        }
 
         // // 绘制第二个球体（与原立方体类保持一致）
         // model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
@@ -136,6 +149,7 @@ public:
         model = model_in;
         shader.use();
         shader.setFloat("rgb_b", sin(glfwGetTime()));
+        shader.setFloat("alpha", alpha); // 设置透明度uniform
         glBindTexture(GL_TEXTURE_2D, textureId);
         
         glm::mat4 view = camera.GetViewMatrix(); // 使用相同的摄像机设置
@@ -147,8 +161,18 @@ public:
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
 
+        bool transparent = (alpha < 1.0f - 1e-6f);
+        if (transparent) {
+            glDepthMask(GL_FALSE);
+        }
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
+        if (transparent) {
+            glDepthMask(GL_TRUE);
+        }
     }
 
     glm::mat4 GetModelMatrix()
