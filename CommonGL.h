@@ -73,6 +73,10 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(Camera::LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(Camera::RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+        camera.ProcessKeyboard(Camera::DOWN, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+        camera.ProcessKeyboard(Camera::UP, deltaTime);
 
     if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
     {
@@ -109,8 +113,8 @@ GLFWwindow* Initialize_OpenGL() // 把OpenGL通用的初始化配置封装
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // MacOS系统兼容
 #endif
-
-    GLFWwindow* window = glfwCreateWindow(1920.0f, 1080.0f, "OpenGL World", NULL, NULL); // 创建glfw窗口
+    float aspect_ratio = 2/3.0f;
+    GLFWwindow* window = glfwCreateWindow(1920.0f*aspect_ratio, 1080.0f*aspect_ratio, "OpenGL World", NULL, NULL); // 创建glfw窗口
     if (window == NULL) { throw std::runtime_error("Failed to create GLFW window"); glfwTerminate(); }
 
     glfwMakeContextCurrent(window);

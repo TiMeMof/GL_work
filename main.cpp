@@ -12,7 +12,7 @@ int main()
     Unified_SphereClass SUN("material/Tshader.vs", "material/Tshader.fs", "material/sun.jpg",32,32,3.0f);
     Unified_SphereClass EARTH("material/Tshader.vs", "material/Tshader.fs","material/earth.png",32,32,0.6f,0.6f);
     Unified_SphereClass MOON("material/Tshader.vs", "material/Tshader.fs","material/moon.jpg",32,32,0.2f, 0.3f);
-    Unified_SphereClass sky("material/Tshader.vs", "material/Tshader.fs","material/milky_way.png", 256, 256, 50.0f);
+    Unified_SphereClass sky("material/Tshader.vs", "material/Tshader.fs","material/milky_way.png", 64, 64, 50.0f);
 
 
     while (!glfwWindowShouldClose(window)) // 主渲染循环
@@ -24,7 +24,7 @@ int main()
 
         glClearColor(0.2f, 0.8f, 0.8f, 1.0f); // 清屏颜色RGBA
         // glClear(GL_COLOR_BUFFER_BIT); // 清空颜色缓冲
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // 清空颜色+深度+模板缓冲
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // 清空颜色+深度缓冲
 
         processInput(window);
         StateSwitch(window);
@@ -76,7 +76,7 @@ int main()
         glm::vec3 posEarth = glm::vec3(tmp1[3]);
         glm::vec3 posSun = glm::vec3(tmp0[3]);
 
-        // 计算与摄像机的距离（假设 camera.Position 可访问）
+        // 计算与摄像机的距离
         float distMoon = glm::length(camera.Position - posMoon);
         float distEarth = glm::length(camera.Position - posEarth);
         float distSun = glm::length(camera.Position - posSun);
@@ -91,7 +91,7 @@ int main()
         });
 
         for (const auto& it : items) {
-            it.obj->Draw(it.model);
+            it.obj->Draw(it.model, camera.Zoom);
         }
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // 线框模式查看
         glfwSwapBuffers(window); // 双循环显像

@@ -134,6 +134,12 @@ public:
             Position += WorldUp * velocity;
         if (direction == DOWN)
             Position -= WorldUp * velocity;
+        //增加上下移动
+        // glm::vec3 up0 = glm::normalize(glm::vec3(Up.x, Up.y, 0.0f));
+        // if (direction == UP)
+        //     Position += up0 * velocity;
+        // if (direction == DOWN)
+        //     Position -= up0 * velocity;
     }
 
     // processes input received from a mouse input system. Expects the offset value in both the x and y direction.

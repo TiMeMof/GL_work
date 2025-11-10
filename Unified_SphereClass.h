@@ -144,7 +144,7 @@ public:
         // glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
     }
 
-    void Draw(glm::mat4 model_in)
+    void Draw(glm::mat4 model_in, float fov=45.0f)
     {
         model = model_in;
         shader.use();
@@ -155,7 +155,7 @@ public:
         glm::mat4 view = camera.GetViewMatrix(); // 使用相同的摄像机设置
         
         glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(fov), 1920.0f / 1080.0f, 0.1f, 100.0f);
 
         shader.setMat4("model", model);
         shader.setMat4("view", view);
