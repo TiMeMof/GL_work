@@ -18,5 +18,5 @@ link_libraries(glad glfw3)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 # 可执行文件(1.exe)
-add_executable(sun_earth_moon src/sun_earth_moon/main.cpp)
-add_executable(ray_tracing src/ray_tracing/main.cpp)
+add_executable(sun_earth_moon src/sun_earth_moon/sun_earth_moon.cpp)
+add_executable(ray_tracing src/ray_tracing/ray_tracing.cpp)
