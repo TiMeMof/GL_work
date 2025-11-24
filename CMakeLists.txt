@@ -4,11 +4,11 @@ project(HelloOpenGL CXX)
 
 # 添加.h头文件包含路径
 include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/include/glad)
-include_directories(${PROJECT_SOURCE_DIR}/include/GLFW)
-include_directories(${PROJECT_SOURCE_DIR}/include/glm)
-include_directories(${PROJECT_SOURCE_DIR}/include/image)
+include_directories(${PROJECT_SOURCE_DIR}/inc)
+include_directories(${PROJECT_SOURCE_DIR}/3rdparty/glad)
+include_directories(${PROJECT_SOURCE_DIR}/3rdparty/GLFW)
+include_directories(${PROJECT_SOURCE_DIR}/3rdparty/glm)
+include_directories(${PROJECT_SOURCE_DIR}/3rdparty/image)
 
 # 添加.a静态库链接路径并链接glfw3库
 link_directories(${PROJECT_SOURCE_DIR}/lib)

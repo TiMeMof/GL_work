@@ -5,6 +5,7 @@
 #include <vector>
 #include "ShaderClass.h"
 #include "LoadTexture.h"
+#include "RayTracingData.h"
 
 class Unified_SphereClass
 {
@@ -19,6 +20,7 @@ private:
     char const * texture_path;
     glm::mat4 model = glm::mat4(1.0f); // 模型pose
     float alpha = 1.0f; // 透明度
+    RTMaterial rtMaterial; // 新增：光追材质属性
 
 public:
     Unified_SphereClass(const char* vertexPath, const char* fragmentPath, 
@@ -180,6 +182,10 @@ public:
         return model;
     }
     
+        // 新增：设置光追材质
+    void SetRTMaterial(glm::vec3 color, glm::vec3 emission, int type) {
+        rtMaterial = { color, emission, type };
+    }
     ~Unified_SphereClass()
     {
         glDeleteVertexArrays(1, &VAO);
