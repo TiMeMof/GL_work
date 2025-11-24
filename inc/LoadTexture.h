@@ -1,10 +1,7 @@
 #pragma once
-#define STB_IMAGE_IMPLEMENTATION
-
-#include <iostream>
-#include <vector>
-#include <glad.h>
+// #define STB_IMAGE_IMPLEMENTATION // 移除这个定义，防止多重定义，应该在某个 .cpp 中定义一次，或者确保只包含一次
 #include <stb_image.h>
+
 
 static unsigned int loadTexture(char const * path)
 {

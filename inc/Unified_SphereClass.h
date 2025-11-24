@@ -21,6 +21,10 @@ private:
     glm::mat4 model = glm::mat4(1.0f); // 模型pose
     float alpha = 1.0f; // 透明度
     RTMaterial rtMaterial; // 新增：光追材质属性
+    
+    // CPU 纹理数据
+    std::vector<unsigned char> cpuTextureData;
+    int texWidth = 0, texHeight = 0, texChannels = 0;
 
 public:
     Unified_SphereClass(const char* vertexPath, const char* fragmentPath, 
@@ -28,6 +32,7 @@ public:
                        int slices = 32, int stacks = 32, float radius = 1.0f, float alpha_in = 1.0f) 
         : shader(vertexPath, fragmentPath), slices(slices), stacks(stacks), radius(radius), texture_path(texture_path), alpha(alpha_in)
     {
+        // ... (顶点生成代码保持不变) ...
         // 生成球体顶点数据（使用参数方程）
         std::vector<float> vertices;
         
@@ -104,6 +109,23 @@ public:
         glBindVertexArray(0);
         
         textureId = loadTexture(texture_path); // 使用相同的贴图
+
+        // 加载纹理数据
+        unsigned char *data = stbi_load(texture_path, &texWidth, &texHeight, &texChannels, 0);
+        if (data) {
+            cpuTextureData.assign(data, data + texWidth * texHeight * texChannels);
+            stbi_image_free(data);
+        } else {
+            std::cout << "Failed to load texture for CPU Ray Tracing: " << texture_path << std::endl;
+        }
+    }
+    
+    // 获取纹理数据
+    void GetTextureData(int& w, int& h, int& c, std::vector<unsigned char>& data) {
+        w = texWidth;
+        h = texHeight;
+        c = texChannels;
+        data = cpuTextureData;
     }
     
     //绘画原点处的球体

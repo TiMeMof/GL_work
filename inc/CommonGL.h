@@ -5,6 +5,7 @@
 #include <glm.hpp>
 #include "CameraClass.h"
 
+// Camera camera(glm::vec3(0.0f, -6.0f, 0.0f));
 Camera camera;
 
 bool firstMouse = true;
@@ -35,7 +36,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
     }
     
     float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos;
+    float yoffset = ypos - lastY;
 
     lastX = xpos;
     lastY = ypos;
