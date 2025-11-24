@@ -186,6 +186,15 @@ public:
     void SetRTMaterial(glm::vec3 color, glm::vec3 emission, int type) {
         rtMaterial = { color, emission, type };
     }
+        // 新增：获取用于上传 GPU 的数据
+    RTSphereData GetRTData() {
+        // 从 model 矩阵提取世界坐标位置
+        glm::vec3 worldPos = glm::vec3(model[3]); 
+        // 假设统一缩放，从 model 提取缩放后的半径
+        float scale = glm::length(glm::vec3(model[0])); 
+        
+        return { worldPos, radius * scale, 0 /*索引需由管理器分配*/ };
+    }
     ~Unified_SphereClass()
     {
         glDeleteVertexArrays(1, &VAO);

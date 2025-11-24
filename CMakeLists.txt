@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.10)
 project(HelloOpenGL CXX)
 
 # 添加.h头文件包含路径
-include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/inc)
+include_directories(${PROJECT_SOURCE_DIR}/inc/ray_tracing)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/glad)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/GLFW)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/glm)
