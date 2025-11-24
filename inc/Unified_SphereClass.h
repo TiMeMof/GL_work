@@ -106,6 +106,7 @@ public:
         textureId = loadTexture(texture_path); // 使用相同的贴图
     }
     
+    //绘画原点处的球体
     void Draw()
     {
         shader.use();
@@ -139,11 +140,6 @@ public:
             glDepthMask(GL_TRUE);
         }
 
-        // // 绘制第二个球体（与原立方体类保持一致）
-        // model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-        // model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(.0f, 1.0f, .0f)); 
-        // shader.setMat4("model", model);
-        // glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
     }
 
     void Draw(glm::mat4 model_in, float fov=45.0f)
@@ -182,18 +178,40 @@ public:
         return model;
     }
     
-        // 新增：设置光追材质
-    void SetRTMaterial(glm::vec3 color, glm::vec3 emission, int type) {
-        rtMaterial = { color, emission, type };
+    // 设置光追材质
+    void SetRTMaterial(glm::vec3 color, glm::vec3 emission, int type, float roughness = 0.0f, float ior = 1.45f) {
+        rtMaterial.color = color;
+        rtMaterial.emission = emission;
+        rtMaterial.type = type;
+        rtMaterial.roughness = roughness;
+        rtMaterial.ior = ior;
+        rtMaterial.padding1 = 0.0f;
+        rtMaterial.padding2 = 0.0f;
+        rtMaterial.padding3 = 0.0f;
     }
-        // 新增：获取用于上传 GPU 的数据
+
+    // 获取材质数据
+    RTMaterial GetRTMaterial() {
+        return rtMaterial;
+    }
+    // 手动设置模型矩阵（用于更新位置而不绘制）
+    void SetModelMatrix(glm::mat4 model_in) {
+        model = model_in;
+    }
+    // 获取用于上传 GPU 的数据
     RTSphereData GetRTData() {
         // 从 model 矩阵提取世界坐标位置
         glm::vec3 worldPos = glm::vec3(model[3]); 
         // 假设统一缩放，从 model 提取缩放后的半径
         float scale = glm::length(glm::vec3(model[0])); 
-        
-        return { worldPos, radius * scale, 0 /*索引需由管理器分配*/ };
+        RTSphereData data;
+        data.center = worldPos;
+        data.radius = radius * scale;
+        data.materialIndex = 0; // 索引需由管理器分配
+        data.padding[0] = 0.0f;
+        data.padding[1] = 0.0f;
+        data.padding[2] = 0.0f;
+        return data;
     }
     ~Unified_SphereClass()
     {

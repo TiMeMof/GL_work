@@ -6,8 +6,10 @@
 #include "Unified_SphereClass.h"
 #include <glm.hpp>
 int main()
-{
-    GLFWwindow* window = Initialize_OpenGL();
+{   float scale_screen = 2/3.0f;
+    float weidth = 1920.0f * scale_screen;
+    float height = 1080.0f * scale_screen;
+    GLFWwindow* window = Initialize_OpenGL(weidth, height); // 初始化OpenGL（创建窗口，设置上下文等）
     
     Unified_SphereClass SUN("material/Tshader.vs", "material/Tshader.fs", "material/sun.jpg",16,16,3.0f);
     Unified_SphereClass EARTH("material/Tshader.vs", "material/Tshader.fs","material/earth.png",16,16,0.6f,0.6f);

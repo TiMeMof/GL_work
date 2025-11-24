@@ -104,17 +104,16 @@ void StateSwitch(GLFWwindow *window)
 }
 
 
-GLFWwindow* Initialize_OpenGL() // 把OpenGL通用的初始化配置封装
+GLFWwindow* Initialize_OpenGL(float width, float height) // 把OpenGL通用的初始化配置封装
 {
-    glfwInit(); // glfw初始化，版本配置为3.3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwInit(); // glfw初始化，版本配置为4.3以支持计算着色器
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // MacOS系统兼容
 #endif
-    float aspect_ratio = 2/3.0f;
-    GLFWwindow* window = glfwCreateWindow(1920.0f*aspect_ratio, 1080.0f*aspect_ratio, "OpenGL World", NULL, NULL); // 创建glfw窗口
+    GLFWwindow* window = glfwCreateWindow(width, height, "OpenGL World", NULL, NULL); // 创建glfw窗口
     if (window == NULL) { throw std::runtime_error("Failed to create GLFW window"); glfwTerminate(); }
 
     glfwMakeContextCurrent(window);
