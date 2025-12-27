@@ -27,13 +27,16 @@ int main()
     rayTracer.SetEnvironmentTexture(skyTexture);
 
     // 设置光追材质
+    // glm::vec3 color, glm::vec3 emission, int type, float roughness = 0.0f, float ior = 1.45f
     SUN.SetRTMaterial(glm::vec3(0.9f, 0.9f, 0.8f), glm::vec3(1.f,1.f,1.f), MaterialType::DIFFUSE); 
-    EARTH.SetRTMaterial(glm::vec3(0.2f, 0.4f, 0.8f), glm::vec3(0.0f), MaterialType::DIFFUSE,0,1.9f);
-    // 修改：颜色设为纯白(1.0)以减少光线吸收；折射率设为 1.1 (接近空气) 以减少透镜扭曲
+    // EARTH.SetRTMaterial(glm::vec3(0.2f, 0.4f, 0.8f), glm::vec3(0.0f), MaterialType::DIFFUSE,0,1.9f);
+    // // 折射：颜色设为纯白(1.0)以减少光线吸收；折射率设为 1.1 (接近空气) 以减少透镜扭曲
     // EARTH.SetRTMaterial(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f), MaterialType::REFRACTIVE, 0.0f, 1.45f); 
+    // 反射
+    EARTH.SetRTMaterial(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f), MaterialType::SPECULAR, 0.0f, 1.45f); 
     MOON.SetRTMaterial(glm::vec3(0.7f, 0.7f, 0.7f), glm::vec3(0.0f), MaterialType::DIFFUSE);
 
-    // TODO: 增加一个飞船class,表面是镜面反射
+    // TODO
     while (!glfwWindowShouldClose(window)) // 主渲染循环
     {
         float currentFrame = static_cast<float>(glfwGetTime());
@@ -60,7 +63,7 @@ int main()
         {
             tmp1[3][i] = model1[3][i];
         }
-        tmp1 = glm::rotate(tmp1, (float)glfwGetTime()/10, glm::vec3(.0f, .0f, 1.0f));  // 先旋转
+        tmp1 = glm::rotate(tmp1, (float)glfwGetTime()/20, glm::vec3(.0f, .0f, 1.0f));  // 先旋转
         tmp1 = glm::translate(tmp1, glm::vec3(8.0f, 0.0f, 0.0f));                     // 再平移
         tmp1 = glm::rotate(tmp1, glm::radians(45.0f), glm::vec3(1.0f, .0f, 0.0f));    // 调整轴向
         tmp1 = glm::rotate(tmp1, (float)glfwGetTime()/2, glm::vec3(.0f, 1.0f, .0f));  // 自转
@@ -93,9 +96,10 @@ int main()
             RTSphereData data = obj.GetRTData();
             data.materialIndex = matIndex;
             spheres.push_back(data);
+            // 提取材质数据
             materials.push_back(obj.GetRTMaterial());
             
-            // 提取纹理数据
+            // 提取贴图数据
             RTTexture tex;
             obj.GetTextureData(tex.width, tex.height, tex.channels, tex.data);
             textures.push_back(tex);

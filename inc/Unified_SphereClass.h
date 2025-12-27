@@ -201,6 +201,11 @@ public:
     }
     
     // 设置光追材质
+    // color: 基础颜色
+    // emission: 自发光颜色
+    // type: 材质类型（漫反射、镜面、折射等）
+    // roughness: 粗糙度（仅对某些材质类型有效）
+    // ior: 折射率（仅对折射材质有效）
     void SetRTMaterial(glm::vec3 color, glm::vec3 emission, int type, float roughness = 0.0f, float ior = 1.45f) {
         rtMaterial.color = color;
         rtMaterial.emission = emission;

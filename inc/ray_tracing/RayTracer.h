@@ -59,5 +59,5 @@ private:
     
     RTTexture environmentTexture;
     bool hasEnvironmentTexture = false;
-    float environmentIntensity = 0.9f;
+    float environmentIntensity = 1.5;
 };
