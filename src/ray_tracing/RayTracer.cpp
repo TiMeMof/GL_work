@@ -340,7 +340,9 @@ void RayTracer::Render(const std::vector<RTSphereData>& spheres,
     glm::mat4 invView = glm::inverse(view);
     glm::mat4 invProj = glm::inverse(projection);
 
-    // 简单的单线程循环 (可以优化为多线程)
+    // 简单的单线程循环
+    // 这里可以换成GPU计算，比如使用CUDA
+    // CPU计算多个矩阵速度会很慢
     #pragma omp parallel for schedule(dynamic)
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
